@@ -140,7 +140,7 @@ namespace BetFlowSystems.Services
             var query = _context.AppUsers
                 .AsNoTracking()
                 .Where(u => u.UserID.ToString().Contains(search ?? "") || u.Surname.Contains(search ?? "") || u.IdNumber.Contains(search ?? ""))
-                .OrderBy(x => x.UserID);
+                .OrderByDescending(x => x.UserID);
 
 
             var totalItems = await query.CountAsync();

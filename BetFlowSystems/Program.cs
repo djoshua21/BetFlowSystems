@@ -49,6 +49,7 @@ builder.Services.AddScoped<BetService>();
 builder.Services.AddScoped<TransactionService>();
 builder.Services.AddScoped<BetTypeService>();
 builder.Services.AddScoped<BetTransactionService>();
+builder.Services.AddScoped<UserSimulationService>();
 
 var app = builder.Build();
 

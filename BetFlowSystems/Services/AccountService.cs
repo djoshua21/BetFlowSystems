@@ -1,8 +1,6 @@
 ﻿using BetFlowSystems.Models;
 using BetFlowSystems.Models.DbModels;
 using BetFlowSystems.Models.DTOs.Account;
-using BetFlowSystems.Models.DTOs.Bet;
-using BetFlowSystems.Models.DTOs.User;
 using BetFlowSystems.Models.Helpers;
 using Microsoft.EntityFrameworkCore;
 
