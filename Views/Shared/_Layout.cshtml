@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - BetFlowSystems</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/BetFlowSystems.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="page-container">
+    <header>
+      @Html.Partial("_NavBar")
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+
+
+    <footer class="border-top my-footer text-muted p-2">
+        <div class="m-0">
+            &copy; 2026 - BetFlow Systems - <a asp-controller="Home" asp-action="Index">Home</a>
+        </div>
+    </footer>
+    </div>
+    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Notification</h5>
+                </div>
+
+                <div class="modal-body py-4 m-0 ">
+                    <p id="feedbackMessage" class="m-0"></p>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn" data-bs-dismiss="modal">OK</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@@5.3.8/dist/js/bootstrap.min.js" integrity="sha384-G/EV+4j2dNv+tEPo3++6LCgdCROaejBqfUeNjuKAiuXbjrxilcCdDz6ZAVfHWe1Y" crossorigin="anonymous"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            var message = '@TempData["FeedbackMessage"]';
+            var type = '@TempData["FeedbackType"]';
+
+            
+        if (message) {
+            document.getElementById("feedbackMessage").innerText = message;
+
+            var modalEl = document.getElementById('feedbackModal');
+            var header = modalEl.querySelector('.modal-header');
+            var footer = modalEl.querySelector('.btn');
+
+            if (type === 'success') {
+                header.classList.add('bg-success', 'text-white');
+                footer.classList.add('btn-success');
+
+            } else {
+                header.classList.add('bg-danger', 'text-white');
+                footer.classList.add('btn-danger');
+            }
+
+            var modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        }
+
+        });
+    </script>
+
+
+
+</body>
+</html>
+
+

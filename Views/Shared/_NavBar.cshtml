@@ -1,0 +1,178 @@
+﻿@{
+    string? role = null;
+
+    if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+    else if (User.IsInRole("Manager"))
+    {
+        role = "Manager";
+    }
+    else if (User.IsInRole("Clerk"))
+    {
+        role = "Clerk";
+    }
+
+}
+
+<nav class="navbar navbar-expand-md navbar-dark">
+    <a class="navbar-brand d-flex align-items-center" asp-action="Index" asp-controller="Home">
+        <img src="/images/icon.svg" alt="BetFlow Systems Logo" width="40" height="40" class="mr-3 " />
+        BetFlow Systems
+    </a>
+
+
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+
+
+   
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+
+
+            <li class="nav-item active">
+                <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+            </li>
+
+            @if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+
+                if (role != "Clerk")
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="User" asp-action="Index">Users</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Account" asp-action="Index">Accounts</a>
+                    </li>
+
+                }
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Bet" asp-action="Index">Bets</a>
+                </li>
+
+              
+                if (role != "Clerk")
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Transaction" asp-action="Index">Transactions</a>
+                    </li>
+
+                }
+
+            
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Home" asp-action="About">About</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Home" asp-action="Contact">Contact</a>
+                </li>
+
+
+
+
+            }
+
+
+
+            
+
+
+
+           
+
+           
+
+
+        </ul>
+
+        <div>
+
+
+            <ul class="navbar-nav ms-auto">
+                @if (User.Identity != null && User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle btn btn-primary"
+                           href="#"
+                           id="adminDropdown"
+                           role="button"
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            @role Options
+                        </a>
+
+                          
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
+                            <li>
+                                <span class="dropdown-item">
+                                    <u>
+                                        @User.Identity.Name
+                                    </u>
+                                </span>
+                            </li>
+
+                            <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+
+                            @if (User.IsInRole("Admin"))
+                            {
+
+
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Admin"
+                                       asp-action="Index">Manage Users</a>
+
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider" />
+                                </li>
+
+                            }
+
+                                
+                            <li>
+                                <form asp-controller="Admin"
+                                      asp-action="Logout"
+                                      method="post"
+                                      class="p-0">
+                                    <button ty="submit" class="dropdown-item">
+                                        Logout
+                                    </button>
+                                </form>
+
+                            </li>
+
+                                    
+                        </ul>
+                    </li>
+
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="btn btn-primary"
+                           asp-controller="Admin"
+                           asp-action="Login">Login</a>
+                    </li>
+
+                }
+            </ul>
+
+        </div>
+
+    </div>
+</nav>

@@ -1,0 +1,90 @@
+﻿@using BetFlowSystems.Models.DTOs.Account
+
+@model CreateAccountDto
+
+@{
+    ViewData["Title"] = "Create Account";
+}
+
+<div class="container page-container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card mt-4 mb-5">
+                <div class="card-header d-flex justify-content-between align-items-center text-white bg-create-header">
+                    <h3 class="mb-0">Create Account</h3>
+                    <span class="badge bg-light text-dark">New</span>
+                </div>
+
+                <div class="card-body">
+                    <form asp-action="Create" class="mb-3">
+
+                    
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="UserID" class="form-label">User ID</label>
+
+                                @if (Model != null)
+                                {
+                                    <input asp-for="UserID" class="form-control"
+                                           type="number" min="1"
+                                           placeholder="Enter linked user ID" readonly />
+                                }
+                                else
+                                {
+                                    <input asp-for="UserID" class="form-control"
+                                           type="number" min="1"
+                                           placeholder="Enter linked user ID" />
+                                }
+
+                                <span asp-validation-for="UserID" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Title" class="form-label">Account Title</label>
+                                <input asp-for="Title" class="form-control" maxlength="50" placeholder="Enter account title" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label asp-for="Description" class="form-label">Description</label>
+                                <textarea asp-for="Description" class="form-control" rows="3" maxlength="200" placeholder="Optional account description"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <div class="d-flex justify-content-between">
+                            @{
+                                var redirect = @Context.Request.Query["redirect"].ToString().ToLower();
+
+                                if (redirect == "useraccounts" && Model != null)
+                                {
+
+                                    <a asp-action="UserAccounts" asp-route-id=@Model.UserID class="btn btn-secondary">Cancel</a>
+
+                                }
+                                else
+                                {
+                                    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+
+                                }
+                            }
+
+                            <button type="submit" class="btn btn-primary">
+                                Create Account
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

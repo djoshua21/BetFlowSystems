@@ -1,0 +1,151 @@
+﻿@using BetFlowSystems
+@using BetFlowSystems.Models
+@using BetFlowSystems.Models.DTOs.Bet
+@using BetFlowSystems.Models.Helpers
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model PagedResult<DisplayBetDto>
+
+@{
+    ViewData["Title"] = "Account Bets";
+}
+
+<div class="container section">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0 mr-3">Bets</h2>
+
+
+            
+        <form class="form-inline w-75" asp-action="Index" asp-controller="Bet" method="get">
+            <input class="form-control mr-sm-2 w-75"
+                   type="search"
+                   value="@ViewBag.CurrentFilter"
+                   placeholder="Bet ID"
+                   aria-label="Search"
+                   name="search"
+                   maxlength="50" />
+            <div>
+                <button class="btn btn-secondary my-2 my-sm-0 mx-1" type="submit">Search</button>
+                <a asp-action="Index" class="btn btn-outline-secondary mx-1 my-xl-0 ">Clear</a>
+            </div>
+        </form>
+        <div>
+            <a asp-action="Create" asp-controller="Bet" class="btn btn-primary">Create Bet</a>
+
+        </div>
+
+    </div>
+
+    <div class="text-center mb-3">
+
+        <h2><u>Account ID: @ViewContext.RouteData.Values["id"]</u></h2>
+    </div>
+
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>Bet ID</th>
+                        <th>Acc ID</th>
+                        <th>Bet Date</th>
+                        <th>Status</th>
+                        <th>Late Updated</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model == null || !Model.Items.Any())
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center p-4">
+                                <div style="text-align:center">
+                                    No Bets found.
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var bet in Model.Items)
+                        {
+
+
+                            <tr>
+                                <td>@(bet.BetID)</td>
+                                <td>@(bet.AccountID)</td>
+                                <td>@(bet.BetDate.ToShortDateString())</td>
+
+                                <td>
+                                    @if (bet.Result == BetStatus.Pending)
+                                    {
+                                        <span class="badge badge-closed p-2"
+                                              style="background-color: grey">
+                                            @bet.Result.ToString()
+                                        </span>
+                                    }
+                                    else if (bet.Result == BetStatus.Win)
+                                    {
+                                        <span class="badge badge-closed p-2"
+                                              style="background-color:green">
+                                            @bet.Result.ToString()
+                                        </span>
+                                    }
+                                    else if (bet.Result == BetStatus.Loss)
+                                    {
+                                        <span class="badge badge-closed p-2"
+                                              style="background-color:red">
+                                            @bet.Result.ToString()
+                                        </span>
+                                    }
+                                    else if (bet.Result == BetStatus.Cancelled)
+                                    {
+                                        <span class="badge badge-closed p-2"
+                                              style="background-color:lightgray">
+                                            <s>@bet.Result.ToString()</s>
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>@(bet.LastUpdatedDate.ToShortDateString())</td>
+
+                                <td class="text-end justify-content-evenly">
+                                    <a asp-action="Details"
+                                       asp-route-id="@bet.BetID"
+                                       class="btn btn-primary btn-sm my-1">Details</a>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@bet.BetID"
+                                       class="btn btn-primary btn-sm my-1">Edit</a>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+            <nav>
+                <ul class="pagination justify-content-center">
+                    @for (int i = 1; i <= Model!.TotalPages; i++)
+                    {
+                        if (i == Model.CurrentPage)
+                        {
+                            <li class="page-item active">
+                                <span class="page-link ">@i</span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

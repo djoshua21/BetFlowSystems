@@ -1,0 +1,98 @@
+﻿@using BetFlowSystems.Models.DTOs.Account
+@using BetFlowSystems.Models
+
+@model DisplayAccountDto
+
+@{
+    ViewData["Title"] = "Account Details";
+}
+
+<div class="container page-container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card mt-4 mb-5">
+                <div class="card-header d-flex justify-content-between align-items-center bg-success text-white">
+                    <h3 class="mb-0">Account Details</h3>
+                    <span class="badge bg-light text-dark">New</span>
+                </div>
+
+                <div class="card-body">
+
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label>Account ID</label>
+                            <div class="form-control bg-light">@Model.AccountID</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>User ID</label>
+                            <div class="form-control bg-light">@Model.UserID</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Balance</label>
+                            <div class="form-control bg-light">@Model.Balance</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Account Status</label>
+                            <div class="form-control bg-light">@Model.AccountStatus</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Title</label>
+                            <div class="form-control bg-light">@Model.Title</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Created Date</label>
+                            <div class="form-control bg-light">@Model.CreatedDate.ToShortDateString()</div>
+                        </div>
+
+                        <div class="col-12">
+                            <label>Description</label>
+                            <div class="form-control bg-light">@Model.Description</div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <div class="d-flex justify-content-between">
+                        @{
+                            var redirect = @Context.Request.Query["redirect"].ToString().ToLower();
+
+                            if (redirect == "useraccounts")
+                            {
+
+                                <a asp-action="UserAccounts" asp-route-id=@Model.UserID class="btn btn-secondary">Back</a>
+                                @*Test*@<a asp-action="AccountBets" asp-controller="Bet" asp-route-id="@Model.AccountID" class="btn btn-primary">Manage Bets</a>
+
+                                <a asp-action="Edit" asp-route-id="@Model.AccountID" asp-route-redirect="UserAccounts" class="btn btn-primary">Edit</a>
+
+                            }
+                            else
+                            {
+                                <a asp-action="Index" class="btn btn-secondary">Back</a>
+                                @*Test*@
+                                <a asp-action="AccountBets" asp-controller="Bet" asp-route-id="@Model.AccountID" class="btn btn-primary">Manage Bets</a>
+
+                                <a asp-action="Edit" asp-route-id="@Model.AccountID" class="btn btn-primary">Edit</a>
+
+
+                            }
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

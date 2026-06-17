@@ -1,0 +1,111 @@
+﻿@using BetFlowSystems.Models.DTOs.Bet
+
+@model DisplayBetDto
+
+@{
+    ViewData["Title"] = "Bet Details";
+}
+
+<div class="container page-container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card mt-4 mb-5">
+                <div class="card-header d-flex justify-content-between align-items-center bg-success text-white">
+                    <h3 class="mb-0">Bet Details</h3>
+                    <span class="badge bg-light text-dark">@Model.Result.ToString()</span>
+                </div>
+
+                <div class="card-body">
+
+
+                    <div class="row g-3">
+
+
+                        <div class="col-md-6">
+                            <label>Bet ID</label>
+                            <div class="form-control bg-light">@Model.BetID</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Account ID</label>
+                            <div class="form-control bg-light">@Model.AccountID</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Bet Type ID</label>
+                            <div class="form-control bg-light">@Model.BetTypeID</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Result</label>
+                            <div class="form-control bg-light">@Model.Result</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Bet Ammount</label>
+                            <div class="form-control bg-light">@Model.BetAmount</div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <label>Win Ammount (incl. steak)</label>
+                            <div class="form-control bg-light">@Model.PossibleWinAmount</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Bet Date</label>
+                            <div class="form-control bg-light">@Model.BetDate.ToShortDateString()</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Last Updated</label>
+                            <div class="form-control bg-light">@Model.LastUpdatedDate.Date.ToShortDateString()</div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <div class="d-flex justify-content-between">
+                        @{
+                            var redirect = @Context.Request.Query["redirect"].ToString().ToLower();
+
+                            if (redirect == "accountbets")
+                            {
+
+                                <a asp-action="AccountBets"
+                                   asp-controller="Bet"
+                                   asp-route-id=@Model.AccountID
+                                   class="btn btn-secondary">Cancel</a>
+
+                                <a asp-action="BetTransactions" asp-controller="Transaction" asp-route-id="@Model.BetID" class="btn btn-primary">View Transactions</a>
+
+
+
+                                <a asp-action="Edit" asp-route-id="@Model.BetID" asp-route-redirect="AccountBets" class="btn btn-primary">Edit</a>
+
+                            }
+                            else
+                            {
+                                <a asp-action="Index" asp-controller="Bet" class="btn btn-secondary">Back</a>
+
+                                <a asp-action="BetTransactions" asp-controller="Transaction" asp-route-id="@Model.BetID" class="btn btn-primary">View Transactions</a>
+
+
+                                <a asp-action="Edit" asp-route-id="@Model.BetID" class="btn btn-primary">Edit</a>
+
+
+                            }
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

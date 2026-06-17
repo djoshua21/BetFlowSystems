@@ -1,0 +1,138 @@
+﻿@using BetFlowSystems.Models.DTOs.Admin
+
+@model List<DisplayAdminDto>
+
+
+
+@{
+    ViewData["Title"] = "Manage Staff Accounts";
+
+}
+
+<div class="container page-container">
+    <div class="section">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <div>
+                <h2 class="mb-1">Manage Staff Accounts</h2>
+                <p class="text-muted mb-0">View, edit, lock and unlock staff/admin accounts.</p>
+            </div>
+
+            <a asp-controller="Admin" asp-action="Register" class="btn btn-primary">Create Account</a>
+
+        </div>
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        <div class="card">
+            <div class="card-header">
+                Staff/Admin Users
+            </div>
+
+            <div class="card-body">
+
+                @if (Model != null && Model.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Status</th>
+                                    <th style="width: 280px;">Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                @foreach (var user in Model)
+                                {
+                                    <tr>
+
+                                        <td>@user.Email</td>
+
+                                        <td>
+                                            <span class="badge badge-general bg-secondary">
+                                                @user.Role
+                                            </span>
+                                        </td>
+
+                                        <td>
+                                            @if (user.IsLocked)
+                                            {
+                                                <span class="badge badge-closed">
+                                                    Locked
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-open">
+                                                    Active
+                                                </span>
+                                            }
+                                        </td>
+
+                                        <td>
+                                            <div class="d-flex justify-content-around">
+                                                <a asp-controller="Admin"
+                                                   asp-action="Edit"
+                                                   asp-route-id="@user.AdminID"
+                                                   class="btn btn-primary btn-sm">Edit</a>
+
+                                                @if (user.IsLocked)
+                                                {
+
+                                                    <form asp-controller="Admin"
+                                                          asp-action="UpdateState"
+                                                          asp-route-id="@user.AdminID"
+                                                          method="post"
+                                                          class="d-inline">
+                                                        <button class="btn btn-primary btn-sm">Unlock</button>
+                                                    </form>
+                                                }
+                                                else
+                                                {
+                                                    <form asp-controller="Admin"
+                                                          asp-action="UpdateState"
+                                                          asp-route-id="@user.AdminID"
+                                                          method="post"
+                                                          class="d-inline">
+                                                        <button class="btn btn-primary btn-sm">Lock</button>
+                                                    </form>
+                                                }
+
+                                                <form asp-controller="Admin"
+                                                      asp-action="Delete"
+                                                      asp-route-id="@user.AdminID"
+                                                      method="post"
+                                                      class="d-inline">
+                                                    <button class="btn btn-outline-danger btn-sm"
+                                                            onclick="return confirm('Are you sure you want to delete this account?');">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                }
+                else
+                {
+                    <div class="alert alert-danger mb-0">
+                        No staff accounts found.
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

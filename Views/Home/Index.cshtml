@@ -1,0 +1,236 @@
+﻿@{
+    ViewData["Title"] = "Home";
+
+    string? role = null;
+
+    if (User.IsInRole("Admin"))
+    {
+        role = "Admin";
+    }
+    else if (User.IsInRole("Manager"))
+    {
+        role = "Manager";
+    }
+    else if (User.IsInRole("Clerk"))
+    {
+        role = "Clerk";
+    }
+
+}
+
+<div class="container page-container">
+
+    @if (role != null)
+    {
+
+       
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+
+                <div class="card shadow-sm border-0 rounded-4">
+                    <div class="card-body p-5 text-center">
+
+                        <h1 class="mb-3">
+                            Welcome, @User.Identity?.Name
+                        </h1>
+
+                        <p class="text-muted mb-4">
+                            You are logged in as:
+                            <strong>@role</strong>
+                        </p>
+
+                        <hr class="mb-4" />
+
+                        <h4 class="mb-4">What would you like to do?</h4>
+
+                        <div class="d-grid gap-3 col-md-8 mx-auto">
+
+                            @if (role == "Admin")
+                            {
+                                <a asp-controller="Admin"
+                                   asp-action="Index"
+                                   class="btn btn-primary btn-lgs mx-2 my-2">Manage Admins</a>
+                            }
+
+                            @if (role == "Admin" || role == "Manager")
+                            {
+                                <a asp-controller="User"
+                                   asp-action="Index"
+                                   class="btn btn-primary btn-lgs mx-2 my-2">Manage Users</a>
+
+                                <a asp-controller="Account"
+                                   asp-action="Index"
+                                   class="btn btn-primary btn-lgs mx-2 my-2">Manage Accounts</a>
+                            }
+
+                            @if (role == "Admin" || role == "Manager" || role == "Clerk")
+                            {
+                                <a asp-controller="Bet"
+                                   asp-action="Index"
+                                   class="btn btn-primary btn-lgs mx-2 my-2">Manage Bets</a>
+
+                            }
+
+                            @if (role == "Admin" || role == "Manager")
+                            {
+
+                                <a asp-controller="Transaction"
+                                   asp-action="Index"
+                                   class="btn btn-primary btn-lgs mx-2 my-2">View Transactions</a>
+                            }
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    }
+    else
+    {
+
+        <!-- Hero Section -->
+        <section class="section">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-7">
+                    <span class="badge rounded-pill mb-3" style="background-color:#2EC4B6; color:#ffffff;">
+                        Database Dashboard Platform
+                    </span>
+
+                    <h1 class="display-5 fw-bold mb-3">
+                        Smarter Betting Account Database Management
+                    </h1>
+
+                    <p class="lead text-muted mb-4">
+                        BetFlow Systems provides a specialized dashboard for viewing, managing,
+                        and maintaining betting account data with confidence. Designed for clarity,
+                        control, and data integrity, the platform simplifies database interaction
+                        through secure table views and structured CRUD operations.
+                    </p>
+
+                    <div class="d-flex justify-content  mx-auto">
+
+                        <a asp-controller="Home" asp-action="Contact" class="btn btn-secondary btn-lg">Contact Us</a>
+                        <a asp-controller="Home" asp-action="About" class="btn btn-primary btn-lg mx-4">Learn More</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="card p-4">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="rounded-circle d-flex align-items-center justify-content-center me-3"
+                                     style="width:55px; height:55px; background-color:#DCFCE7;">
+                                    <i class="bi bi-database-check fs-3 text-credit"></i>
+                                </div>
+                                <div>
+                                    <h4 class="mb-0">Reliable Data Control</h4>
+                                    <small class="text-muted">Built for structured betting account records</small>
+                                </div>
+                            </div>
+
+                            <p class="text-muted mb-4">
+                                View database tables, manage records, and apply safe operations while
+                                maintaining both database-level and application-level validation.
+                            </p>
+
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <h3 class="text-credit mb-0">CRUD</h3>
+                                    <small class="text-muted">Operations</small>
+                                </div>
+                                <div class="col-4">
+                                    <h3 class="mb-0" style="color:#155a5b;">DB</h3>
+                                    <small class="text-muted">Constraints</small>
+                                </div>
+                                <div class="col-4">
+                                    <h3 class="text-debit mb-0">Safe</h3>
+                                    <small class="text-muted">Validation</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Feature Cards -->
+        <section class="section">
+            <div class="text-center mb-4">
+                <h2>Built to Make Database Management Easier</h2>
+                <p class="text-muted">
+                    BetFlow Systems gives administrators a clean and efficient way to manage betting account information.
+                </p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body p-4">
+                            <i class="bi bi-table fs-1 mb-3" style="color:#155a5b;"></i>
+                            <h4>Table Visibility</h4>
+                            <p class="text-muted">
+                                Easily view database tables in a structured and readable format,
+                                helping users understand records without needing direct database access.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body p-4">
+                            <i class="bi bi-pencil-square fs-1 mb-3" style="color:#155a5b;"></i>
+                            <h4>CRUD Management</h4>
+                            <p class="text-muted">
+                                Create, read, update, and delete records through a controlled interface
+                                designed to reduce errors and improve administrative efficiency.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body p-4">
+                            <i class="bi bi-shield-check fs-1 mb-3" style="color:#155a5b;"></i>
+                            <h4>Data Integrity</h4>
+                            <p class="text-muted">
+                                Protect betting account records using database-level constraints and
+                                code-level validation to ensure information remains accurate and consistent.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Value Proposition -->
+        <section class="section">
+            <div class="card">
+                <div class="card-body p-4 p-md-5">
+                    <div class="row align-items-center g-4">
+                        <div class="col-lg-8">
+                            <h2>Powerful Control Without Database Complexity</h2>
+                            <p class="text-muted mb-0">
+                                BetFlow Systems bridges the gap between raw database access and practical
+                                administrative control. It gives teams a reliable way to manage betting
+                                account records while supporting safer workflows, cleaner data handling,
+                                and better visibility across key tables.
+                            </p>
+                        </div>
+
+                        <div class="col-lg-4 text-lg-end">
+                            <a asp-controller="Home" asp-action="About" class="btn btn-primary btn-lg">
+                                <i class="bi bi-arrow-right ms-2"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+</div>

@@ -1,0 +1,138 @@
+﻿@using BetFlowSystems
+@using BetFlowSystems.Models
+@using BetFlowSystems.Models.DTOs.Account
+@using BetFlowSystems.Models.Helpers
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model PagedResult<DisplayAccountDto>
+
+@{
+    ViewData["Title"] = "User Accounts";
+}
+
+<div class="container section">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0 mr-3">Accounts</h2>
+
+
+            
+        <form class="form-inline w-75" asp-action="UserAccounts" asp-controller="Account" method="get">
+            <input class="form-control mr-sm-2 w-75"
+                   type="search"
+                   value="@ViewBag.CurrentFilter"
+                   placeholder="Account ID"
+                   aria-label="Search"
+                   name="search"
+                   maxlength="50" />
+            <div>
+                <button class="btn btn-secondary my-2 my-sm-0 mx-1" type="submit">Search</button>
+                <a asp-action="UserAccounts" asp-route-id="@ViewContext.RouteData.Values["id"]" class="btn btn-outline-secondary mx-1 my-xl-0 ">Clear</a>
+            </div>
+        </form>
+        <div>
+            <a asp-action="Create" asp-controller="Account" asp-route-uID="@ViewContext.RouteData.Values["id"]" asp-route-redirect="UserAccounts" class="btn btn-primary">Create Account</a>
+
+        </div>
+
+    </div>
+    <div class="text-center mb-3">
+
+        <h2><u>User ID: @ViewContext.RouteData.Values["id"]</u></h2>
+    </div>
+
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>Acc ID</th>
+                        <th>User ID</th>
+                        <th>Title</th>
+                        <th>Balance</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model == null || !Model.Items.Any())
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center p-4">
+                                <div style="text-align:center">
+                                    <a asp-action="Index">
+                                    No accounts found. Click to go home
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var account in Model.Items)
+                        {
+
+                            @*   Console.WriteLine(account.AccountID);
+                            Console.WriteLine(account.Title);
+                            Console.WriteLine(account.Balance);
+                            Console.WriteLine(account.AccountStatus); *@
+
+                            <tr>
+                                <td>@(account.AccountID)</td>
+                                <td>@(account.UserID)</td>
+                                <td>@(account.Title)</td>
+                                <td>@(account.Balance)</td>
+                                <td>
+                                    @if (account.AccountStatus == AccState.Open)
+                                    {
+                                        <span class="badge badge-open p-2">Open</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-closed p-2">Closed</span>
+                                    }
+                                </td>
+                                <td class="text-end justify-content-evenly">
+                                    <a asp-action="Details"
+                                       asp-route-id="@account.AccountID"
+                                       asp-route-redirect="UserAccounts"
+                                       class="btn btn-primary btn-sm my-1">Details</a>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@account.AccountID"
+                                       asp-route-redirect="UserAccounts"
+                                       class="btn btn-primary btn-sm my-1">Edit</a>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@account.AccountID"
+                                       class="btn btn-outline-danger btn-sm my-1">Delete</a>
+                                </td>
+                                @* <td>@account.CreatedDate.ToString("yyyy-MM-dd")</td> *@
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+            <nav>
+                <ul class="pagination justify-content-center">
+                    @for (int i = 1; i <= Model!.TotalPages; i++)
+                    {
+                        if (i == Model.CurrentPage)
+                        {
+                            <li class="page-item active">
+                                <span class="page-link ">@i</span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("UserAccounts", new { page = i })">@i</a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,95 @@
+﻿@using BetFlowSystems.Models.DTOs.Bet
+
+@model CreateBetDto
+
+
+@{
+    ViewData["Title"] = "Create Bet";
+}
+
+<div class="container page-container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card mt-4 mb-5">
+                <div class="card-header d-flex justify-content-between align-items-center text-white bg-create-header">
+                    <h3 class="mb-0">Create Bet</h3>
+                    <span class="badge bg-light text-dark">New</span>
+                </div>
+
+                <div class="card-body">
+
+                    <form asp-action="Create" class="mb-3">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label asp-for="AccountID" class="form-label">Account ID</label>
+
+                                @if (Model != null && Model.AccountID != 0)
+                                {
+                                    <input asp-for="AccountID" class="form-control"
+                                           type="number" min="1"
+                                           placeholder="Enter linked account ID" readonly />
+                                }
+                                else
+                                {
+                                    <input asp-for="AccountID" class="form-control"
+                                           type="number" min="1"
+                                           placeholder="Enter linked account ID" />
+                                }
+
+                                <span asp-validation-for="AccountID" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="BetTypeID" class="form-label">Bet Type ID</label>
+                                <input asp-for="BetTypeID" class="form-control"
+                                       type="number" min="1"
+                                       placeholder="Enter bet type ID" />
+                                <span asp-validation-for="BetTypeID" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="BetAmount" class="form-label">Bet Amount</label>
+                                <input asp-for="BetAmount" class="form-control"
+                                       type="number" step="0.5" min="1"
+                                       placeholder="Enter bet amount" />
+                                <span asp-validation-for="BetAmount" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="PossibleWinAmount" class="form-label">Win Amount (incl. stake)</label>
+                                <input asp-for="PossibleWinAmount" class="form-control"
+                                       type="number" step="0.5" min="1"
+                                       placeholder="Win amount" />
+                                <span asp-validation-for="PossibleWinAmount" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="BetDate" class="form-label">Bet Date</label>
+                                <input asp-for="BetDate" class="form-control"
+                                       type="date"
+                                       min="2024-01-01"
+                                       max="@DateTime.Today.Date.ToString("yyyy-MM-dd")" />
+                                <span asp-validation-for="BetDate" class="text-danger"></span>
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Index" class="btn btn-secondary">Cncel</a>
+                            <button class="btn btn-primary">Create Bet</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

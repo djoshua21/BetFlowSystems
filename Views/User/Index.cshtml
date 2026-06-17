@@ -1,0 +1,146 @@
+﻿@using BetFlowSystems
+@using BetFlowSystems.Models
+@using BetFlowSystems.Models.DTOs.User
+@using BetFlowSystems.Models.Helpers
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model PagedResult<DisplayUserDto>
+
+
+@{
+    ViewData["Title"] = "Users";
+}
+
+<div class="container section">
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0 mr-3">Users</h2>
+
+
+            
+        <form class="form-inline w-75" asp-action="Index" asp-controller="User" method="get">
+            <input class="form-control mr-sm-2 w-75"
+                   type="search"
+                   value="@ViewBag.CurrentFilter"
+                   placeholder="User ID, Surname, or ID Number"
+                   aria-label="Search"
+                   name="search"
+                   maxlength="50" />
+            <input type="hidden" name="page" value="@Context.Request.Query["page"]" />
+            <div>
+                <button class="btn btn-secondary my-2 my-sm-0 mx-1" type="submit">Search</button>
+                <a asp-action="Index" class="btn btn-outline-secondary mx-1 my-xl-0 ">Clear</a>
+            </div>
+        </form>
+        <div>
+            <a asp-action="Create" class="btn btn-primary">Add User</a>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table mb-0">
+                <thead>
+                    <tr>
+                        <th>User ID</th>
+                        <th>ID Number</th>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Status</th>
+                        @* <th>Created</th> *@
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model == null || !Model.Items.Any())
+                    {
+                        <tr>
+                            <td colspan="6" class="text-center p-4">
+                                <div style="text-align:center">
+                                    No users found.
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        foreach (var user in Model.Items)
+                        {
+                            <tr>
+                                <td>@(user.UserID)</td>
+                                <td>@(user.IdNumber)</td>
+                                <td>@(user.Name ?? "-")</td>
+                                <td>@(user.Surname ?? "-")</td>
+                                <td>
+                                    @if (user.IsActive)
+                                    {
+                                        <span class="badge badge-open p-2">Open</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-closed p-2">Closed</span>
+                                    }
+                                </td>
+                                <td class="text-end justify-content-">
+                                    <a asp-action="Details"
+                                       asp-route-id="@user.UserID"
+                                       class="btn btn-primary btn-sm my-1">Details</a>
+
+                                    <a asp-action="Edit"
+                                       asp-route-id="@user.UserID"
+                                       class="btn btn-primary btn-sm my-1">Edit</a>
+
+                                    
+                                    <form asp-action="Delete"
+                                          asp-route-id="@user.UserID"
+                                          asp-route-search_return="@Context.Request.Query["search"]"
+                                          asp-route-page_return="@Context.Request.Query["page"]"
+                                          method="post"
+                                          style="display:inline;">
+
+                                        @{
+                                            Console.WriteLine("TEST DATA");
+
+                                            Console.WriteLine(Context.Request.Query["search"]);
+                                            Console.WriteLine(Context.Request.Query["page"]);
+                                        }
+
+                                        <button class="btn btn-outline-danger btn-sm my-1"
+                                                onclick="return confirm('Are you sure you want to delete this User (@user.UserID)?');">
+                                            Delete
+                                        </button>
+                                    </form>
+
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+            <nav>
+                <ul class="pagination justify-content-center">
+                    @for (int i = 1; i <= Model!.TotalPages; i++)
+                    {
+                        if (i == Model.CurrentPage)
+                        {
+                            <li class="page-item active">
+                                <span class="page-link ">@i</span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="@Url.Action("Index", new { search = ViewBag.CurrentFilter, page = i })">@i</a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>

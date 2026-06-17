@@ -1,0 +1,78 @@
+﻿@using BetFlowSystems.Models.DTOs.User
+@using BetFlowSystems.Models.Helpers
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model DisplayUserDto
+
+<div class="container page-container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card mt-4 mb-5">
+                <div class="card-header d-flex justify-content-between align-items-center bg-details-header">
+                    <h3 class="mb-0">User Details</h3>
+                    <span class="badge @(Model.IsActive ? "badge-open" : "badge-closed")">
+                        @(Model.IsActive ? "Active" : "Inactive")
+                    </span>
+                </div>
+
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label>User ID</label>
+                            <div class="form-control bg-light">@Model.UserID</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>ID Number</label>
+                            <div class="form-control bg-light">@Model.IdNumber</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Name</label>
+                            <div class="form-control bg-light">@Model.Name</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Surname</label>
+                            <div class="form-control bg-light">@Model.Surname</div>
+                        </div>
+
+                        <div class="col-12">
+                            <label>Address</label>
+                            <div class="form-control bg-light">@Model.Address</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Created Date</label>
+                            <div class="form-control bg-light">@Model.CreatedDate.ToString("dd MMM yyyy HH:mm")</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label>Status</label>
+                            <div class="form-control bg-light">
+                                @if (Model.IsActive)
+                                {
+                                    <span class="text-success fw-semibold">Active</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger fw-semibold">Inactive</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">Back</a>
+                        <a asp-action="UserAccounts" asp-controller="Account" asp-route-id="@Model.UserID" class="btn btn-primary">Manage Accounts</a>
+                        <a asp-action="Edit" asp-route-id="@Model.UserID" class="btn btn-primary">
+                            Edit User
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

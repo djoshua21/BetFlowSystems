@@ -1,0 +1,58 @@
+﻿@using BetFlowSystems.Models.DTOs.User
+
+@model CreateUserDto
+
+@{
+    ViewData["Title"] = "Create User";
+}
+
+<div class="container mb-4 section">
+    <div class="card mt-4 mb-5">
+
+        <div class="card-header d-flex justify-content-between align-items-center bg-create-header">
+            <h3 class="mb-0">Create New User</h3>
+        </div>
+        <form method="post" class="alert mb-3">
+
+            <div class="mb-3">
+                <label asp-for="IdNumber" class="form-label">South African ID Number</label>
+                <input asp-for="IdNumber" class="form-control"
+                       maxlength="13"
+                       minlength="13"
+                       pattern="\d{13}" />
+                <span asp-validation-for="IdNumber"
+                      class="text-danger">
+                </span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" maxlength="50" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Surname" class="form-label"></label>
+                <input asp-for="Surname" class="form-control" maxlength="50" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Address" class="form-label"></label>
+                <input asp-for="Address" class="form-control" maxlength="200" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary">Create User</button>
+                <a class="btn btn-secondary" asp-action="Index">Back</a>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
