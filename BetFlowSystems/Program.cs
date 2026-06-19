@@ -6,9 +6,27 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//DB Context
+//var connectionString = builder.Environment.IsDevelopment()
+//    ? builder.Configuration.GetConnectionString("TestConnection")
+//    : builder.Configuration.GetConnectionString("ProductionConnection");
+
+//Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
+//Console.WriteLine("Is Dev?");
+//Console.WriteLine(builder.Environment.IsDevelopment());
+
+
+#if DEBUG
+var connectionString = builder.Configuration.GetConnectionString("TestConnection");
+Console.WriteLine("DEBUG");
+#else
+var connectionString = builder.Configuration.GetConnectionString("ProductionConnection");
+Console.WriteLine("RELEASE");
+#endif
+
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(connectionString));
+
 
 //Identity (Admin only)
 
@@ -80,6 +98,7 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     await DbSeeder.SeedAdminAsync(services);
+    await DbSeeder.SeedBetTypesAsync(services);
 }
 
 app.Run();
