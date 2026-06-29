@@ -1,0 +1,49 @@
+Table Names
+
+Admins:
+- adminID
+- username
+- password
+
+Users:
+- userID
+- idNumber
+- name
+- surname
+- address
+- password
+- createdDate
+
+Accounts
+- accountID (PK)
+- accountNumber (UNIQUE)
+- accountStatus (Open / Closed)
+- title
+- balance
+- description
+- createdDate
+- userID (FK)
+
+Bets
+- betID (PK)
+- accountID (FK)
+- betTypeID (FK)
+- betAmount
+- possibleWinAmount
+- result (Pending / Win / Loss / Cancelled)
+- betDate (selected by user (today by default))
+- lastUpdatedDate (created or when status us updated)
+
+Transactions
+- transactionID
+- accountID
+- betID (NULLABLE FK)
+- amount
+- transactionType
+- transactionDate (fixed, generate by system)
+
+BetTypes
+- betTypeID (PK)
+- sport (e.g., Soccer, Tennis, Cricket)
+- eventName (e.g., Arsenal vs Chelsea)
+- description
