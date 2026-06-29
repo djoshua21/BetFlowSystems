@@ -7,8 +7,8 @@
         public int? AccountID { get; set; }
         public Account? Account { get; set; }
 
-        public int BetID { get; set; }
-        public Bet Bet { get; set; }
+        public int? BetID { get; set; }
+        public Bet? Bet { get; set; }
 
         public decimal Amount { get; set; }
         public DebitOrCredit TransactionType { get; set; }

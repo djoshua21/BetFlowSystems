@@ -4,7 +4,7 @@
 
 **BetFlow Systems** is an **admin-only backend management tool** built with **ASP.NET MVC** and **Entity Framework Core**, designed to model a structured betting environment with strong domain rules, relational integrity, and maintainable architecture.
 
-The system enables administrators to manage users, user-linked betting accounts, bets, bet types, and the transaction records generated through betting activity. It is built around a dedicated service layer that enforces **business rules and validation logic**, while **EF Core Fluent API** is used to define entity relationships and apply stricter database constraints.
+The system enables administrative staff to manage users, user-linked betting accounts, bets, bet types, and the transaction records generated through betting activity. It is built around a dedicated service layer that enforces **business rules and validation logic**, while **EF Core Fluent API** is used to define entity relationships and apply stricter database constraints.
 
 Unlike a basic CRUD application, BetFlow Systems is designed to reflect a more realistic operational workflow where a single user can own **multiple betting accounts**, bets are placed against specific accounts, and transactions are only created when bets are made. This helps ensure better traceability, consistency, and control over account and betting data.
 
@@ -59,3 +59,17 @@ This project was developed as a **backend-focused portfolio application** to dem
 - advanced model configuration using **Fluent API**
 - implementation of **business rules and validation**
 - structured handling of betting and account workflows
+
+## SETUP INSTRUCTIONS
+
+- Clone The Repository
+- Open Solution in Visual Studio
+- Ensure SQL Server is installed
+- Optional: Update DB Connection String (It will work as is)
+- Choose Debug/Release Config (To Simulate Development DB & Production DB)
+- Run Program
+
+## TROUBLE SHOOTING
+
+- Biuld Error after cloning, linked to missing package: Run the following in the project directory - "dotnet restore" -> "dotnet build"
+- "Microsoft.Data.SqlClient.SqlException: 'A network-related or instance-specific error occurred while establishing a connection to SQL Server": SQL Server is either not installed or not running.

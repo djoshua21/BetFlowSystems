@@ -212,7 +212,7 @@ namespace BetFlowSystems.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("BetID")
+                    b.Property<int?>("BetID")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("TransactionDate")
@@ -452,8 +452,7 @@ namespace BetFlowSystems.Migrations
                     b.HasOne("BetFlowSystems.Models.DbModels.Bet", "Bet")
                         .WithMany("Transactions")
                         .HasForeignKey("BetID")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Account");
 

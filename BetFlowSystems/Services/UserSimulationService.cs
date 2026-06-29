@@ -1,5 +1,7 @@
 ﻿using BetFlowSystems.Models;
+using BetFlowSystems.Models.DbModels;
 using BetFlowSystems.Models.DTOs.Bet;
+using BetFlowSystems.Models.DTOs.Transaction;
 using Microsoft.EntityFrameworkCore;
 
 namespace BetFlowSystems.Services
@@ -9,15 +11,15 @@ namespace BetFlowSystems.Services
         private readonly ApplicationDbContext _context;
         private readonly BetTransactionService _betTransactionService;
 
-        //private readonly TransactionService _transactionService;
+        private readonly TransactionService _transactionService;
         //private readonly BetService _betService;
         //private readonly AccountService _accountService;
         //private readonly UserService _userService;
 
         public UserSimulationService(
             ApplicationDbContext context,
-            BetTransactionService betTransactionService
-        //TransactionService transactionService,
+            BetTransactionService betTransactionService,
+        TransactionService transactionService
         //BetService betService,
         //AccountService accountService,
         //UserService userService
@@ -25,7 +27,7 @@ namespace BetFlowSystems.Services
         {
             _context = context;
             _betTransactionService = betTransactionService;
-            //_transactionService = transactionService;
+            _transactionService = transactionService;
             //_betService = betService;
             //_accountService = accountService;
             //_userService = userService;
@@ -33,7 +35,7 @@ namespace BetFlowSystems.Services
 
         public async Task<Result> Deposit(int accountID, decimal amount)
         {
-            if (amount < 0)
+            if (amount <= 0)
             {
                 return new Result
                 {
@@ -53,6 +55,18 @@ namespace BetFlowSystems.Services
                 return new Result { Success = false, ErrorMessage = "Account is closed" };
             }
 
+
+            var newTransaction = new CreateTransactionDto
+            {
+                AccountID = acc.AccountID,
+                BetID = -1,
+                Amount = amount,
+                TransactionType = DebitOrCredit.Credit
+            };
+
+            await _transactionService.CreateTransaction(newTransaction);
+
+
             acc.Balance += amount;
             _context.SaveChanges();
 
@@ -61,7 +75,7 @@ namespace BetFlowSystems.Services
 
         public async Task<Result> Withdrawal(int accountID, decimal amount)
         {
-            if (amount < 0)
+            if (amount <= 0)
             {
                 return new Result
                 {
@@ -87,6 +101,16 @@ namespace BetFlowSystems.Services
                 return new Result { Success = false, ErrorMessage = "Insufficient Funds." };
             }
 
+            var newTransaction = new CreateTransactionDto
+            {
+                AccountID = acc.AccountID,
+                BetID = -1,
+                Amount = amount,
+                TransactionType = DebitOrCredit.Debit
+            };
+
+            await _transactionService.CreateTransaction(newTransaction);
+
             acc.Balance -= amount;
             _context.SaveChanges();
 
@@ -106,6 +130,16 @@ namespace BetFlowSystems.Services
             {
                 return new Result { Success = false, ErrorMessage = "Account is closed" };
             }
+
+            var newTransaction = new CreateTransactionDto
+            {
+                AccountID = acc.AccountID,
+                BetID = -1,
+                Amount = acc.Balance,
+                TransactionType = DebitOrCredit.Debit
+            };
+
+            await _transactionService.CreateTransaction(newTransaction);
 
             acc.Balance = 0;
             _context.SaveChanges();

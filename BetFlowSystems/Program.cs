@@ -10,13 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 //    ? builder.Configuration.GetConnectionString("TestConnection")
 //    : builder.Configuration.GetConnectionString("ProductionConnection");
 
-//Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
-//Console.WriteLine("Is Dev?");
-//Console.WriteLine(builder.Environment.IsDevelopment());
+Console.WriteLine($"Environment: {builder.Environment.EnvironmentName}");
+Console.WriteLine("Is Dev?");
+Console.WriteLine(builder.Environment.IsDevelopment());
 
 
-#if DEBUG
-var connectionString = builder.Configuration.GetConnectionString("TestConnection");
+#if DEBUG // Development
+var connectionString = builder.Configuration.GetConnectionString("DevelopmentConnection");
 Console.WriteLine("DEBUG");
 #else
 var connectionString = builder.Configuration.GetConnectionString("ProductionConnection");
@@ -77,6 +77,14 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
+
+// ---- RUN MIGRATIONS ON STARTUP ----
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate();
+}
+// -----------------------------------
 
 app.UseHttpsRedirection();
 

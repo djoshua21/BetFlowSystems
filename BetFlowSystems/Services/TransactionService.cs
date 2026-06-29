@@ -23,6 +23,9 @@ namespace BetFlowSystems.Services
             var betExists = await _context.Bets
                 .AnyAsync(b => b.BetID == createTransactionDto.BetID);
 
+            
+            betExists = betExists || createTransactionDto.BetID == -1;
+
 
             if (!betExists)
             {
@@ -32,6 +35,8 @@ namespace BetFlowSystems.Services
                     ErrorMessage = "Bet does not exist"
                 };
             }
+
+
 
             var accountExists = await _context.Accounts.AnyAsync(a => a.AccountID == createTransactionDto.AccountID);
 
@@ -49,7 +54,8 @@ namespace BetFlowSystems.Services
             var transaction = new Transaction
             {
                 AccountID = createTransactionDto.AccountID,
-                BetID = createTransactionDto.BetID,
+                BetID = createTransactionDto.BetID == -1
+                ? null : createTransactionDto.BetID,
                 Amount = createTransactionDto.Amount,
                 TransactionType = createTransactionDto.TransactionType,
                 TransactionDate = DateTime.UtcNow
@@ -135,7 +141,7 @@ namespace BetFlowSystems.Services
 
             var query = _context.Transactions
                .AsNoTracking()
-               .Where(t => 
+               .Where(t =>
                t.TransactionID.ToString().Contains(search ?? "")
                && t.BetID == id)
                .OrderByDescending(t => t.TransactionDate);

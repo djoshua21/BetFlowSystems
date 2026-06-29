@@ -40,12 +40,12 @@ namespace BetFlowSystems.Controllers
 
             var accounts = await _accountService.GetUserAccounts(id, page, pageSize, search);
 
-            if (accounts.TotalItems == 0)
-            {
-                TempData["FeedbackMessage"] = $"No Accounts found for User ID {id}";
-                TempData["FeedbackType"] = "error";
-                return RedirectToAction(nameof(Index));
-            }
+            //if (accounts.TotalItems == 0)
+            //{
+            //    TempData["FeedbackMessage"] = $"No Accounts found for User ID {id}";
+            //    TempData["FeedbackType"] = "error";
+            //    return RedirectToAction(nameof(Index));
+            //}
 
             return View(accounts);
         }

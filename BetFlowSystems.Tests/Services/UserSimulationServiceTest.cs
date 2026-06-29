@@ -25,7 +25,14 @@ namespace BetFlowSystems.Tests.Services
         {
             // These tests do not use GenerateRandomBet,
             // so BetTransactionService is not needed here.
-            return new UserSimulationService(context, null!);
+
+            var transactionService = new TransactionService(context);
+
+            return new UserSimulationService(
+                context,
+                null!,
+                transactionService);
+
         }
 
         private async Task SeedAccount(

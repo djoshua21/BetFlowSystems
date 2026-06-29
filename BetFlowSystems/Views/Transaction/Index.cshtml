@@ -40,7 +40,8 @@
                 <thead>
                     <tr>
                         <th>Transaction ID</th>
-                        <th>Bet ID</th>
+
+                        <th>Bet ID/User Action</th>
                         <th>Acc ID</th>
                         <th>Amount</th>
                         <th>Transaction Type</th>
@@ -67,7 +68,25 @@
 
                             <tr>
                                 <td>@(transaction.TransactionID)</td>
-                                <td>@(transaction.BetID)</td>
+                                @* <td>@(transaction.BetID)</td> *@
+
+                                @if (transaction.BetID != null)
+                                {
+                                    <td>@(transaction.BetID)</td>
+                                }
+                                else
+                                {
+                                    if (transaction.TransactionType == DebitOrCredit.Debit)
+                                    {
+                                        <td>Withdrawal</td>
+                                    }
+                                    else
+                                    {
+                                        <td>Deposit</td>
+                                    }
+
+                                    
+                                }
 
                                 <td>@(transaction.AccountID)</td>
                                 <td>@(transaction.Amount)</td>
